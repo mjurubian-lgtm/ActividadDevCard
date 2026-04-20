@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Julian Rubiano · Tarjeta de Perfil</title>
+  
+  <!-- Fuentes de Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Urbanist:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ================================
+       VARIABLES CSS - PALETA PERSONALIZADA
+       (tonos neón / tecnológico con contraste elegante)
+    ================================ */
+    :root {
+      --acento: #00e5ff;           /* cian eléctrico (moderno, vibrante) */
+      --acento-hover: #4dfffc;
+      --fondo: #0b0c15;            /* fondo general profundo */
+      --fondo-card: #12131f;       /* fondo tarjeta elegante */
+      --fondo-card2: #1d1e30;      /* hover stats */
+      --borde: rgba(0, 229, 255, 0.2);
+      --texto: #f0f3ff;
+      --texto-suave: #a1b0d0;
+      --shadow-glow: 0 20px 35px -12px rgba(0, 229, 255, 0.15);
+    }
+    
+    /* modo claro (toggle manual con clase .light-mode en body) */
+    body.light-mode {
+      --acento: #ff6d3a;           /* naranja audaz pero legible en claro */
+      --acento-hover: #ff8c5a;
+      --fondo: #eef2fa;
+      --fondo-card: #ffffff;
+      --fondo-card2: #f5f7fe;
+      --borde: rgba(255, 109, 58, 0.25);
+      --texto: #1f2a3e;
+      --texto-suave: #4a5568;
+      --shadow-glow: 0 25px 40px -12px rgba(0,0,0,0.15);
+    }
+    
+    /* ================================
+       RESET Y GLOBALES
+    ================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Urbanist', sans-serif;
+      background-color: var(--fondo);
+      color: var(--texto);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      transition: background-color 0.3s ease, color 0.2s ease;
+    }
+    
+    /* ================================
+       BOTÓN MODO CLARO/OSCURO (flotante)
+    ================================ */
+    .theme-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: var(--fondo-card);
+      border: 1px solid var(--borde);
+      border-radius: 60px;
+      backdrop-filter: blur(4px);
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--texto);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 100;
+      transition: all 0.2s ease;
+      font-family: 'Urbanist', sans-serif;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .theme-toggle:hover {
+      border-color: var(--acento);
+      transform: scale(1.02);
+      background: var(--fondo-card2);
+    }
+    
+    /* ================================
+       TARJETA PRINCIPAL
+    ================================ */
+    .tarjeta {
+      background-color: var(--fondo-card);
+      border: 1px solid var(--borde);
+      border-radius: 36px;
+      padding: 36px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: var(--shadow-glow);
+      animation: fadeSlide 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1) both;
+      transition: background 0.2s, border 0.2s, box-shadow 0.3s;
+    }
+    
+    .tarjeta::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--acento), var(--acento), transparent);
+      margin-bottom: 28px;
+      border-radius: 4px;
+      width: 100%;
+    }
+    
+    /* ================================
+       PERFIL TOP
+    ================================ */
+    .perfil-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      border: 3px solid var(--acento);
+      flex-shrink: 0;
+      object-fit: cover;  /* Esto hace que la foto se ajuste perfectamente sin deformarse */
+      background: #1f1f2e;
+      transition: transform 0.2s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    
+    .avatar:hover {
+      transform: scale(1.02);
+      border-color: var(--acento-hover);
+    }
+    
+    .perfil-info {
+      flex: 1;
+    }
+    
+    .nombre {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--texto);
+      letter-spacing: 1.2px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+    
+    .rol {
+      font-size: 0.8rem;
+      color: var(--acento);
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 700;
+      background: rgba(0, 229, 255, 0.08);
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    body.light-mode .rol {
+      background: rgba(255, 109, 58, 0.1);
+    }
+    
+    /* ================================
+       BIO - real, con toque personal
+    ================================ */
+    .bio {
+      font-size: 0.95rem;
+      color: var(--texto-suave);
+      line-height: 1.7;
+      font-weight: 400;
+      border-left: 3px solid var(--acento);
+      padding-left: 18px;
+      margin-bottom: 28px;
+      transition: border 0.2s;
+    }
+    
+    /* ================================
+       ESTADÍSTICAS (reales y significativas)
+    ================================ */
+    .stats {
+      display: flex;
+      border: 1px solid var(--borde);
+      border-radius: 28px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      background: rgba(0,0,0,0.1);
+    }
+    
+    body.light-mode .stats {
+      background: rgba(0,0,0,0.02);
+    }
+    
+    .stat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 6px;
+      border-right: 1px solid var(--borde);
+      transition: background 0.25s ease;
+      cursor: default;
+    }
+    
+    .stat:last-child {
+      border-right: none;
+    }
+    
+    .stat:hover {
+      background: var(--fondo-card2);
+    }
+    
+    .stat-numero {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.1rem;
+      color: var(--acento);
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+    
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--texto-suave);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      margin-top: 5px;
+    }
+    
+    /* ================================
+       BOTONES + INTERACCIÓN "¡SEGUIR!"
+    ================================ */
+    .acciones {
+      display: flex;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 14px 8px;
+      border-radius: 44px;
+      font-family: 'Urbanist', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .btn-primario {
+      background: var(--acento);
+      color: #0a0c18;
+      box-shadow: 0 5px 12px rgba(0, 229, 255, 0.3);
+    }
+    
+    body.light-mode .btn-primario {
+      color: #1e1f2a;
+      box-shadow: 0 5px 12px rgba(255, 109, 58, 0.3);
+    }
+    
+    .btn-primario:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 28px rgba(0, 229, 255, 0.4);
+      background: var(--acento-hover);
+      filter: brightness(1.02);
+    }
+    
+    .btn-secundario {
+      background: transparent;
+      color: var(--texto);
+      border: 1px solid var(--borde);
+      backdrop-filter: blur(4px);
+    }
+    
+    .btn-secundario:hover {
+      border-color: var(--acento);
+      color: var(--acento);
+      transform: translateY(-2px);
+      background: rgba(0, 229, 255, 0.05);
+    }
+    
+    /* mini feedback para toast (notificación) */
+    .toast-message {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.9);
+      background: var(--acento);
+      color: #12131f;
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: 60px;
+      font-size: 0.9rem;
+      font-family: 'Urbanist', monospace;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    
+    .toast-message.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    
+    body.light-mode .toast-message {
+      color: #1e1f2a;
+      background: #ff6d3a;
+    }
+    
+    /* ================================
+       RESPONSIVE
+    ================================ */
+    @media (max-width: 520px) {
+      .tarjeta {
+        padding: 24px;
+        margin: 16px 0;
+      }
+      
+      .nombre {
+        font-size: 1.65rem;
+      }
+      
+      .perfil-top {
+        gap: 14px;
+      }
+      
+      .avatar {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .stats {
+        border-radius: 22px;
+      }
+      
+      .stat {
+        padding: 14px 4px;
+      }
+      
+      .stat-numero {
+        font-size: 1.7rem;
+      }
+      
+      .btn {
+        padding: 12px 8px;
+        font-size: 0.9rem;
+      }
+      
+      .theme-toggle {
+        top: 14px;
+        right: 14px;
+        padding: 6px 14px;
+        font-size: 0.75rem;
+      }
+    }
+    
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(35px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Botón modo claro/oscuro (toggle) -->
+  <button class="theme-toggle" id="darkModeToggle" aria-label="Cambiar tema claro/oscuro">
+    <span>🌙</span> <span id="themeText">Modo oscuro</span>
+  </button>
+  
+  <!-- Tarjeta principal -->
+  <div class="tarjeta">
+    <div class="perfil-top">
+      <!-- ✅ TU FOTO REAL: foto.png (debe estar en la misma carpeta) -->
+      <img class="avatar"
+           src="foto.png"
+           alt="Julian Alberto Rubiano Rodriguez"
+           onerror="this.src='https://api.dicebear.com/7.x/notionists/svg?seed=Julian%20Rubiano&backgroundColor=00e5ff'"
+      />
+      <div class="perfil-info">
+        <h1 class="nombre">Julian Alberto Rubiano Rodriguez</h1>
+        <p class="rol">Ingeniería de Sistemas · Full-Stack en formación</p>
+      </div>
+    </div>
+    
+    <!-- BIO real, adaptada a su pasión y contexto -->
+    <p class="bio">
+      🔹 Apasionado por la tecnología, el desarrollo web y las soluciones escalables. 
+      Actualmente construyendo proyectos reales para dominar el ecosistema full-stack. 
+      Cada línea de código acerca mis ideas a la industria tech. 🚀✨
+    </p>
+    
+    <!-- Estadísticas personalizadas con datos realistas y motivadores -->
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-numero">14</span>
+        <span class="stat-label">Proyectos</span>
+      </div>
+      <div class="stat">
+        <span class="stat-numero">200+</span>
+        <span class="stat-label">Commits 2025</span>
+      </div>
+      <div class="stat">
+        <span class="stat-numero">4.8</span>
+        <span class="stat-label">Promedio acum.</span>
+      </div>
+    </div>
+    
+    <!-- Botones: Conectar (¡Seguir!) y Portafolio -->
+    <div class="acciones">
+      <button class="btn btn-primario" id="seguirBtn">✨ ¡Seguir!</button>
+      <button class="btn btn-secundario" id="portafolioBtn">📁 Portafolio</button>
+    </div>
+  </div>
+  
+  <!-- Toast flotante para feedback -->
+  <div id="toastMsg" class="toast-message">✨ Acción completada</div>
+  
+  <script>
+    (function() {
+      // ----- 1. Modo claro/oscuro con persistencia (localStorage) -----
+      const toggleBtn = document.getElementById('darkModeToggle');
+      const themeTextSpan = document.getElementById('themeText');
+      const body = document.body;
+      
+      // Verificar preferencia guardada o sistema
+      const savedTheme = localStorage.getItem('julianTheme');
+      if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        if (themeTextSpan) themeTextSpan.innerText = 'Modo claro';
+        const iconSpan = toggleBtn.querySelector('span:first-child');
+        if (iconSpan) iconSpan.innerText = '☀️';
+      } else {
+        // modo oscuro por defecto
+        body.classList.remove('light-mode');
+        if (themeTextSpan) themeTextSpan.innerText = 'Modo oscuro';
+        const iconSpan = toggleBtn.querySelector('span:first-child');
+        if (iconSpan) iconSpan.innerText = '🌙';
+      }
+      
+      function setTheme(theme) {
+        if (theme === 'light') {
+          body.classList.add('light-mode');
+          localStorage.setItem('julianTheme', 'light');
+          if (themeTextSpan) themeTextSpan.innerText = 'Modo claro';
+          const iconSpan = toggleBtn.querySelector('span:first-child');
+          if (iconSpan) iconSpan.innerText = '☀️';
+        } else {
+          body.classList.remove('light-mode');
+          localStorage.setItem('julianTheme', 'dark');
+          if (themeTextSpan) themeTextSpan.innerText = 'Modo oscuro';
+          const iconSpan = toggleBtn.querySelector('span:first-child');
+          if (iconSpan) iconSpan.innerText = '🌙';
+        }
+      }
+      
+      toggleBtn.addEventListener('click', () => {
+        const isLight = body.classList.contains('light-mode');
+        if (isLight) {
+          setTheme('dark');
+        } else {
+          setTheme('light');
+        }
+      });
+      
+      // ----- 2. Botón "¡Seguir!" (Conectar) con acción especial + notificación personalizada
+      const seguirBtn = document.getElementById('seguirBtn');
+      const toast = document.getElementById('toastMsg');
+      
+      function showMessage(text, duration = 2000) {
+        if (!toast) return;
+        toast.innerText = text;
+        toast.classList.add('show');
+        setTimeout(() => {
+          toast.classList.remove('show');
+        }, duration);
+      }
+      
+      // Acción principal del botón "Seguir"
+      seguirBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Animación sutil
+        seguirBtn.style.transform = 'scale(0.97)';
+        setTimeout(() => { seguirBtn.style.transform = ''; }, 150);
+        
+        // Mostrar feedback personalizado
+        showMessage(`🚀 ¡Gracias por seguir a Julian! Conectemos en la industria tech.`, 2200);
+        
+        console.log('✨ Julian Rubiano: Seguimiento activado desde la tarjeta de perfil');
+        
+        // Cambiar texto del botón momentáneamente
+        const originalText = seguirBtn.innerHTML;
+        seguirBtn.innerHTML = '✅ ¡Siguiendo!';
+        setTimeout(() => {
+          seguirBtn.innerHTML = originalText;
+        }, 1500);
+      });
+      
+      // ----- 3. Botón Portafolio
+      const portafolioBtn = document.getElementById('portafolioBtn');
+      portafolioBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        portafolioBtn.style.transform = 'scale(0.97)';
+        setTimeout(() => { portafolioBtn.style.transform = ''; }, 150);
+        
+        showMessage(`📁 Portafolio de Julian: próximamente disponible · GitHub y proyectos activos`, 2400);
+        
+        const originalPort = portafolioBtn.innerHTML;
+        portafolioBtn.innerHTML = '✨ Explorando...';
+        setTimeout(() => {
+          portafolioBtn.innerHTML = originalPort;
+        }, 1200);
+        
+        console.log('📁 Portafolio - Julian Rubiano: desarrollador en crecimiento');
+      });
+      
+      // ----- 4. Efecto interactivo en estadísticas
+      const statBoxes = document.querySelectorAll('.stat');
+      statBoxes.forEach(stat => {
+        stat.addEventListener('click', () => {
+          const label = stat.querySelector('.stat-label')?.innerText;
+          if (label === 'Proyectos') {
+            showMessage(`📌 ${label}: Julian ha desarrollado más de 14 proyectos entre web, APIs y apps.`, 1500);
+          } else if (label === 'Commits 2025') {
+            showMessage(`💻 ${label}: Más de 200 contribuciones activas este año, mejorando cada día.`, 1500);
+          } else if (label === 'Promedio acum.') {
+            showMessage(`📚 ${label}: 4.8 - Dedicación y pasión por la ingeniería de sistemas.`, 1500);
+          }
+        });
+      });
+      
+      console.log('✅ Tarjeta de perfil cargada | Julian Alberto Rubiano Rodriguez | Foto: foto.png');
+    })();
+  </script>
+</body>
+</html>
